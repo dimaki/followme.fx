@@ -20,6 +20,7 @@ Requirements:
 How to use it:
 - git clone https://github.com/dimaki/followme.fx
 - Open project in Netbeans, right-click on project and select "Custom" -> "Run iPhone Simulator"
+- or use `mvn robovm:iphone-sim`
 
 See also: [http://afterburner.adam-bien.com](http://afterburner.adam-bien.com)
 and [https://github.com/AdamBien/followme.fx](https://github.com/AdamBien/followme.fx)
