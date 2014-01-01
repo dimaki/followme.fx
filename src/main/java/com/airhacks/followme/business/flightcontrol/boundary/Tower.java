@@ -1,7 +1,5 @@
 package com.airhacks.followme.business.flightcontrol.boundary;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javax.annotation.PostConstruct;
 
 /**

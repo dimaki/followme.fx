@@ -2,12 +2,46 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.airhacks</groupId>
+    <groupId>de.dimaki</groupId>
     <artifactId>followme</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>followme.fx</name>
-    <url>http://airhacks.com</url>
+    <name>followme.iosfx</name>
+    
+    <properties>
+        <robovm.launcherclass>com.airhacks.followme.RoboVMJFXLauncher</robovm.launcherclass>
+        <project.mainclass>com.airhacks.followme.App</project.mainclass>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <exec.extra>-ea</exec.extra>
+    </properties>
+    
+    <profiles>
+        <profile>
+            <id>jdk8</id>
+            <activation>
+                <file>
+                    <exists>${java.home}/lib/ext/jfxrt.jar</exists>
+                </file>
+            </activation>
+            <properties>
+                <jfxrt.jar>${java.home}/lib/ext/jfxrt.jar</jfxrt.jar>
+            </properties>
+        </profile>
+        <profile>
+            <id>jdk7</id>
+            <activation>
+                <file>
+                    <exists>${java.home}/lib/jfxrt.jar</exists>
+                </file>
+            </activation>
+            <properties>
+                <jfxrt.jar>${java.home}/lib/jfxrt.jar</jfxrt.jar>
+            </properties>
+        </profile>
+    </profiles>
+    
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -21,10 +55,89 @@
             <version>1.4.1</version>
             <scope>compile</scope>
         </dependency>
+        
+        <!-- RoboVM -->
+        <dependency>
+            <groupId>org.robovm</groupId>
+            <artifactId>robovm-rt</artifactId>
+            <version>0.0.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.robovm</groupId>
+            <artifactId>robovm-cocoatouch</artifactId>
+            <version>0.0.7</version>
+        </dependency>
+        
+        <!-- JavaFX -->
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>javafx</artifactId>
+            <version>2.2.3</version>
+            <scope>system</scope>
+            <systemPath>${jfxrt.jar}</systemPath>
+        </dependency>
+        
+        <!-- Dependencies for afterburner.fx -->
+        <dependency>
+            <groupId>org.codehaus.woodstox</groupId>
+            <artifactId>woodstox-core-asl</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>jsr250-api</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
+        </dependency>
+        
     </dependencies>
+    
     <build>
         <defaultGoal>clean package</defaultGoal>
         <plugins>
+            <plugin>
+                <groupId>org.robovm</groupId>
+                <artifactId>robovm-maven-plugin</artifactId>
+                <version>0.0.7.2</version>
+                <configuration>
+                    <config>
+                        <mainClass>com.airhacks.followme.RoboVMJFXLauncher</mainClass>
+                        <forceLinkClasses>
+                            <pattern>com.sun.scenario.effect.impl.prism.*</pattern>
+                            <pattern>com.sun.scenario.effect.impl.prism.ps.*</pattern>
+                            <pattern>com.sun.scenario.effect.impl.prism.sw.*</pattern>
+                            <pattern>com.ctc.wstx.stax.WstxInputFactory</pattern>
+                            <pattern>javax.annotation.PostConstruct</pattern>
+                            <pattern>javafx.scene.layout.AnchorPane</pattern>
+                            <pattern>sun.reflect.misc.Trampoline</pattern>
+                            <pattern>com.airhacks.followme.presentation.followme.FollowmePresenter</pattern>
+                        </forceLinkClasses>
+                    </config>
+                    <includeJFX>true</includeJFX>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>${project.mainclass}</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                        <manifestEntries>
+                            <JavaFX-Application-Class>${project.mainclass}</JavaFX-Application-Class>
+                            <JavaFX-Version>8.0</JavaFX-Version>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>2.6</version>
@@ -44,34 +157,37 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.2.1</version>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
                 <executions>
                     <execution>
-                        <id>package-jar</id>
+                        <id>distro-assembly</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>exec</goal>
+                            <goal>single</goal>
                         </goals>
                         <configuration>
-                            <executable>${env.JAVA_HOME}/bin/javafxpackager</executable>
-                            <arguments>
-                                <argument>-createjar</argument>
-                                <argument>-nocss2bin</argument>
-                                <argument>-appclass</argument>
-                                <argument>com.airhacks.followme.App</argument>
-                                <argument>-srcdir</argument>
-                                <argument>${project.build.directory}/classes</argument>
-                                <argument>-outdir</argument>
-                                <argument>./target</argument>
-                                <argument>-outfile</argument>
-                                <argument>${project.artifactId}-app</argument>
-                                <argument>-v</argument>
-                            </arguments>
+                            <descriptors>
+                                <descriptor>src/main/assembly/html.java.net.xml</descriptor>
+                            </descriptors>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>${exec.extra}</argument>
+                        <argument>-Xbootclasspath/a:${jfxrt.jar}</argument>
+                        <argument>-classpath</argument>
+                        <classpath/>
+                        <argument>${project.mainclass}</argument>
+                    </arguments>
+                </configuration>
             </plugin>
         </plugins>
         <resources>
@@ -94,9 +210,4 @@
         </resources>
         <finalName>followme</finalName>
     </build>
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 </project>

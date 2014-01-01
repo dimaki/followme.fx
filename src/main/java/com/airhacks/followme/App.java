@@ -14,10 +14,10 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        System.setProperty("happyEnding", " Enjoy the flight!");
+        System.setProperty("happyEnding", " Enjoy the flight on iOS!");
         FollowmeView appView = new FollowmeView();
         Scene scene = new Scene(appView.getView());
-        stage.setTitle("followme.fx");
+        stage.setTitle("followme.fx for iOS");
         final String uri = getClass().getResource("app.css").toExternalForm();
         scene.getStylesheets().add(uri);
         stage.setScene(scene);
