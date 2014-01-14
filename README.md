@@ -1,3 +1,5 @@
+[![Build Status](https://drone.io/github.com/dimaki/followme.fx/status.png)](https://drone.io/github.com/dimaki/followme.fx/latest)
+
 followme.fx for iOS
 ===================
 
