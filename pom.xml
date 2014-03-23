@@ -60,12 +60,12 @@
         <dependency>
             <groupId>org.robovm</groupId>
             <artifactId>robovm-rt</artifactId>
-            <version>0.0.9</version>
+            <version>0.0.10</version>
         </dependency>
         <dependency>
             <groupId>org.robovm</groupId>
             <artifactId>robovm-cocoatouch</artifactId>
-            <version>0.0.9</version>
+            <version>0.0.10</version>
         </dependency>
         
         <!-- JavaFX -->
@@ -102,7 +102,7 @@
             <plugin>
                 <groupId>org.robovm</groupId>
                 <artifactId>robovm-maven-plugin</artifactId>
-                <version>0.0.9.1</version>
+                <version>0.0.10.1</version>
                 <configuration>
                     <config>
                         <mainClass>com.airhacks.followme.RoboVMJFXLauncher</mainClass>
@@ -140,7 +140,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.6</version>
+                <version>2.8</version>
                 <executions>
                     <execution>
                         <id>unpack-dependencies</id>
