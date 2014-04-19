@@ -8,6 +8,7 @@
 <?import javafx.scene.input.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?scenebuilder-stylesheet ../../app.css?>
 
 <AnchorPane id="AnchorPane" minHeight="180.0" prefHeight="480.0" prefWidth="320.0" styleClass="airpad" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.airhacks.followme.presentation.followme.FollowmePresenter">
   <children>
@@ -16,6 +17,6 @@
         <Font size="12.0" />
       </font>
     </Label>
-    <Button fx:id="launch" layoutX="127.0" layoutY="96.0" mnemonicParsing="false" onAction="#launch" text="Launch" />
+    <Button fx:id="launch" layoutX="117.0" layoutY="96.0" mnemonicParsing="false" onAction="#launch" text="Launch" />
   </children>
 </AnchorPane>
