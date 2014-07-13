@@ -1,12 +1,12 @@
 package com.airhacks.followme;
 
 import javafx.application.Application;
-import org.robovm.cocoatouch.foundation.NSAutoreleasePool;
-import org.robovm.cocoatouch.foundation.NSDictionary;
-import org.robovm.cocoatouch.uikit.UIApplication;
-import org.robovm.cocoatouch.uikit.UIApplicationDelegate;
+import org.robovm.apple.foundation.NSAutoreleasePool;
+import org.robovm.apple.foundation.NSDictionary;
+import org.robovm.apple.uikit.UIApplication;
+import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
 
-public class RoboVMJFXLauncher extends UIApplicationDelegate.Adapter {
+public class RoboVMJFXLauncher extends UIApplicationDelegateAdapter {
 
     @Override
     public boolean didFinishLaunching(UIApplication application, NSDictionary launchOptions) {
